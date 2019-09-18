@@ -35,7 +35,7 @@ ull pascalTriangle(int n, int r) {
 
 
 // return catalan number n-th using dp O(n^2)
-// catalan[n] = nCr(2n,n)/(n+1)
+// catalan[n] = nCr(2n,n)/(n+1) //max = 35
 vector<ull> catalan;
 ull catalanNumber(int n) {
 	if (n <= 1)return 1;
