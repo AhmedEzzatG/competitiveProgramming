@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -32,10 +32,10 @@ void run() {
 }
 
 const int MAX = 1001;
-int mem[MAX][MAX];
+int mem[MAX][MAX], n, m;
 string s1, s2;
-int longestCommonSubsequence(int index1, int index2) {
-	if (index1 == sz(s1) || index2 == sz(s2))return 0;
+int longestCommonSubsequence(int index1 = 0, int index2 = 0) {
+	if (index1 == n || index2 == m)return 0;
 	int& rt = mem[index1][index2];
 	if (~rt)return rt;
 	if (s1[index1] == s2[index2])
@@ -47,7 +47,10 @@ int longestCommonSubsequence(int index1, int index2) {
 
 int main() {
 	run();
-	clr(mem, -1);
-	cin >> s1 >> s2;
-	cout << longestCommonSubsequence(0, 0);
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		cin >> n >> m >> s1 >> s2;
+		cout << longestCommonSubsequence() << endl;
+	}
 }

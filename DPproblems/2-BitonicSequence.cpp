@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -74,10 +74,12 @@ void buildSequence(int index, int last, bool increasing) {
 }
 int main() {
 	run();
-	clr(mem, -1);
-	int n; cin >> n;
-	v.resize(n);
-	for (auto& a : v)cin >> a;
-	buildSequence(0, sz(v), 1);
-	for (auto it : output)cout << it << ' ';
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		int n; cin >> n;
+		v = vector<int>(n);
+		for (auto& a : v)cin >> a;
+		cout << longestBitonicSequence(0, sz(v), 1) << endl;
+	}
 }

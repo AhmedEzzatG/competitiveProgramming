@@ -24,14 +24,14 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
 
-const int MAX = 1001;
+const int MAX = 10001;
 int mem[MAX];
 vector<int> price;
 int  cuttingRod(int length) {
@@ -42,11 +42,17 @@ int  cuttingRod(int length) {
 		rt = max(rt, price[i] + cuttingRod(length - i));
 	return rt;
 }
+
 int main() {
 	run();
-	int length;
-	cin >> length;
-	price.resize(length + 1);
-	for (auto& it : price)cin >> it;
-	cout << cuttingRod(length);
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		int length;
+		cin >> length;
+		price = vector<int>(length + 1);
+		for (int i = 1; i <= length; i++)
+			cin >> price[i];
+		cout << cuttingRod(length) << endl;
+	}
 }

@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -33,15 +33,16 @@ void run() {
 vector<int> coins;
 vector<vector<int>> mem;
 int coinChange(int index, int value) {
-	if (value == 0)return 0;
-	if (value < 0 || index == sz(coins))return oo;
+	if (value == 0)return 1;
+	if (value < 0 || index == sz(coins))return 0;
 	int& rt = mem[index][value];
 	if (~rt)return rt;
 	rt = coinChange(index + 1, value);
-	rt = min(rt, 1 + coinChange(index, value - coins[index]));
+	rt += coinChange(index, value - coins[index]);
 	return rt;
 }
-const int MAX = 1000001;
+
+const int MAX = 10001;
 int mem2[MAX];
 int coinChange(int value) {
 	if (value == 0)return 0;
@@ -56,10 +57,14 @@ int coinChange(int value) {
 
 int main() {
 	run();
-	clr(mem2, -1);
-	int n, value;
-	cin >> n >> value;
-	mem = vector<vector<int>>(n, vector<int>(value + 1, -1));
-	coins.resize(n);
-	for (auto& a : coins)cin >> a;
+	int t; cin >> t;
+	while (t--) {
+		int n, value;
+		cin >> n;
+		coins = vector<int>(n);
+		for (auto& a : coins)cin >> a;
+		cin >> value;
+		mem = vector<vector<int>>(n, vector<int>(value + 1, -1));
+		cout << coinChange(0, value) << endl;
+	}
 }

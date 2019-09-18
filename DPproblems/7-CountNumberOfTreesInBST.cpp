@@ -38,6 +38,7 @@ ll countTrees(int length) {
 	if (length <= 1)return 1;
 	ll& rt = mem[length];
 	if (~rt)return rt;
+	rt = 0;
 	for (int i = 0; i < length; i++)
 		rt += countTrees(i) * countTrees(length - 1 - i);
 	return rt;

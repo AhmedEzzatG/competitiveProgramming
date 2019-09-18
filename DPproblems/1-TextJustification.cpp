@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -32,19 +32,19 @@ void run() {
 }
 
 const int MAX = 10001;
-int length;
-vector<string> words, output;
-int mem[MAX];
+int mem[MAX], maxLength;
+vector<int> length;
+vector<pair<int, int>> output;
 int solve(int start) {
-	if (start == sz(words))return 0;
+	if (start == sz(length))return 0;
 	int& rt = mem[start];
 	if (~rt)return rt;
 	rt = oo;
 	int sumlength = 0, cost;
-	for (int end = start; end < sz(words); end++) {
-		sumlength += (end > start) + sz(words[end]);
-		cost = (length - sumlength) * (length - sumlength);
-		if (sumlength <= length)
+	for (int end = start; end < sz(length); end++) {
+		sumlength += (end > start) + length[end];
+		cost = (maxLength - sumlength) * (maxLength - sumlength);
+		if (sumlength <= maxLength)
 			rt = min(rt, cost + solve(end + 1));
 		else break;
 	}
@@ -52,18 +52,16 @@ int solve(int start) {
 }
 
 void buildText(int start) {
-	if (start == sz(words))return;
+	if (start == sz(length))return;
 	int rt = solve(start);
 	int sumLength = 0, cost;
 	string curLine;
-	for (int end = start; end < sz(words); end++) {
-		if (end != start)curLine += ' ';
-		curLine += words[end];
-		sumLength += (end > start) + sz(words[end]);
-		cost = (length - sumLength) * (length - sumLength);
-		if (sumLength <= length) {
+	for (int end = start; end < sz(length); end++) {
+		sumLength += (end > start) + length[end];
+		cost = (maxLength - sumLength) * (maxLength - sumLength);
+		if (sumLength <= maxLength) {
 			if (rt == cost + solve(end + 1)) {
-				output.push_back(curLine);
+				output.emplace_back(start, end);
 				buildText(end + 1);
 				return;
 			}
@@ -73,11 +71,18 @@ void buildText(int start) {
 }
 int main() {
 	run();
-	clr(mem, -1);
-	int n;
-	cin >> n >> length;
-	words = vector<string>(n);
-	for (auto& it : words)cin >> it;
-	buildText(0);
-	for (auto it : output)cout << it << endl;
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		int n;
+		cin >> n;
+		length = vector<int>(n);
+		for (auto& L : length)cin >> L;
+		cin >> maxLength;
+		output.clear();
+		buildText(0);
+		for (int i = 0; i < sz(output); i++)
+			cout << output[i].first + 1 << ' ' << output[i].second + 1 << ' ';
+		cout << endl;
+	}
 }

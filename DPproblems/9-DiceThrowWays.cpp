@@ -32,7 +32,7 @@ void run() {
 }
 int  n, m;
 vector<vector<int>> mem;
-int diceThrowWays(int remDices,int sum) {
+int diceThrowWays(int remDices, int sum) {
 	if (sum == 0)return 1;
 	if (sum < 0 || remDices == 0)return 0;
 	int& rt = mem[remDices][sum];
@@ -45,8 +45,11 @@ int diceThrowWays(int remDices,int sum) {
 
 int main() {
 	run();
-	cin >> n >> m;
-	mem = vector<vector<int>>(n + 1, vector<int>(n * m + 1));
-	int x; cin >> x;
-	cout << diceThrowWays(n, x);
+	int t; cin >> t;
+	while (t--) {
+		int x;
+		cin >> m >> n >> x;
+		mem = vector<vector<int>>(n + 1, vector<int>(x + 1, -1));
+		cout << diceThrowWays(n, x) << endl;
+	}
 }

@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -32,19 +32,25 @@ void run() {
 }
 const int MAX = 1000001;
 ll mem[MAX][2];
-ll count(int length, bool last) {
+void add(ll& a, ll b) {
+	if ((a += b) >= mod)a -= mod;
+}
+ll count(int length, bool last = 0) {
 	if (length == 0)return 1;
 	ll& rt = mem[length][last];
 	if (~rt)return rt;
 	rt = 0;
-	rt += count(length - 1, 0);
-	if (!last)rt += count(length - 1, 1);
+	add(rt, count(length - 1, 0));
+	if (last == 0)add(rt, count(length - 1, 1));
 	return rt;
 }
 
 int main() {
 	run();
 	clr(mem, -1);
-	int length; cin >> length;
-	cout << count(length, 0);
+	int t; cin >> t;
+	while (t--) {
+		int length; cin >> length;
+		cout << count(length) << endl;
+	}
 }
