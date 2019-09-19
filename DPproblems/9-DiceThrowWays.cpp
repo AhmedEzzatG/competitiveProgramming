@@ -24,18 +24,19 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
-int  n, m;
-vector<vector<int>> mem;
-int diceThrowWays(int remDices, int sum) {
-	if (sum == 0)return 1;
-	if (sum < 0 || remDices == 0)return 0;
-	int& rt = mem[remDices][sum];
+
+const int MAX = 51;
+ll mem[MAX][MAX][MAX], n, m;
+ll diceThrowWays(int remDices, int sum) {
+	if (sum < 0)return 0;
+	if (remDices == 0)return (sum == 0);
+	ll& rt = mem[m][remDices][sum];
 	if (~rt)return rt;
 	rt = 0;
 	for (int i = 1; i <= m; i++)
@@ -45,11 +46,11 @@ int diceThrowWays(int remDices, int sum) {
 
 int main() {
 	run();
+	clr(mem, -1);
 	int t; cin >> t;
 	while (t--) {
 		int x;
 		cin >> m >> n >> x;
-		mem = vector<vector<int>>(n + 1, vector<int>(x + 1, -1));
 		cout << diceThrowWays(n, x) << endl;
 	}
 }

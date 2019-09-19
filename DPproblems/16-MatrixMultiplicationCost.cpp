@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -36,7 +36,7 @@ int mem[MAX][MAX];
 vector<pair<int, int>> matrices;
 int matrixMultiplicationCost(int left, int right) {
 	if (left >= right)return 0;
-	int &rt = mem[left][right];
+	int& rt = mem[left][right];
 	if (~rt)return rt;
 	rt = oo;
 	for (int i = left; i < right; i++) {
@@ -48,10 +48,16 @@ int matrixMultiplicationCost(int left, int right) {
 
 int main() {
 	run();
-	clr(mem, -1);
-	int n;
-	cin >> n;
-	matrices.resize(n);
-	for (auto& it : matrices)cin >> it.first >> it.second;
-	cout << matrixMultiplicationCost(0, sz(matrices) - 1);
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		int n;
+		cin >> n;
+		vector<int> v(n);
+		for (auto& it : v)cin >> it;
+		matrices.clear();
+		for (int i = 1; i < n; i++)
+			matrices.emplace_back(v[i - 1], v[i]);
+		cout << matrixMultiplicationCost(0, sz(matrices) - 1) << endl;
+	}
 }

@@ -35,7 +35,7 @@ ull mem[MAX];
 ull maxProduct(int n) {
 	if (n <= 1)return 1;
 	ull& rt = mem[n];
-	if (~rt)return rt;
+	if (rt)return rt;
 	rt = n;
 	for (int i = 1; i < n; i++)
 		rt = max(rt, maxProduct(i) * maxProduct(n - i));
@@ -44,7 +44,6 @@ ull maxProduct(int n) {
 
 int main() {
 	run();
-	clr(mem, -1);
 	int n; cin >> n;
 	cout << maxProduct(n);
 }

@@ -1,6 +1,6 @@
-#include <bits/stdc++.h>
-#include <unordered_map>
-#include <unordered_set>
+#include<bits/stdc++.h>
+#include<unordered_map>
+#include<unordered_set>
 using namespace std;
 #define endl "\n"
 #define oo 0x3f3f3f3fLL
@@ -24,30 +24,35 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
-
+const int MAX = 1001;
+int mem[MAX][MAX];
 vector<pair<int, int>> items;
-vector<vector<int>> mem;
 int knapsack01(int index, int weight) {
-	if (weight <= 0 || index == sz(items))return 0;
+	if (weight < 0)return -oo;
+	if (weight == 0 || index == sz(items))return 0;
 	int& rt = mem[index][weight];
 	if (~rt)return rt;
 	rt = knapsack01(index + 1, weight);
-	rt = max(rt, knapsack01(index + 1, weight - items[index].first) + items[index].second);
+	rt = max(rt, knapsack01(index + 1, weight - items[index].second) + items[index].first);
 	return rt;
 }
 
 int main() {
 	run();
-	int n, w;
-	cin >> n >> w;
-	items.resize(n);
-	for (auto& it : items)cin >> it.first >> it.second;
-	mem = vector<vector<int>>(n, vector<int>(w + 1, -1));
-	cout << knapsack01(0, w);
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		int n, w;
+		cin >> n >> w;
+		items = vector<pair<int, int>>(n);
+		for (int i = 0; i < n; i++)cin >> items[i].first;
+		for (int i = 0; i < n; i++)cin >> items[i].second;
+		cout << knapsack01(0, w) << endl;
+	}
 }

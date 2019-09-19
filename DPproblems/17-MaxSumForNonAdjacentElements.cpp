@@ -32,7 +32,7 @@ void run() {
 }
 
 const int MAX = 1000001;
-int mem[MAX];
+int mem[MAX], memC[MAX][2];
 vector<int> v;
 int maxSum(int index) {
 	if (index >= sz(v))return 0;
@@ -43,11 +43,23 @@ int maxSum(int index) {
 	return rt;
 }
 
+int maxSumCycle(int index,bool takeFirst) {
+	if (index >= sz(v))return 0;
+	int& rt = memC[index][takeFirst];
+	if (~rt)return rt;
+	rt = maxSumCycle(index + 1, takeFirst);
+	if (index + 1 != sz(v) || !takeFirst)
+		rt = max(rt, v[index] + maxSumCycle(index + 2, takeFirst));
+	return rt;
+}
+
 int main() {
 	run();
-	clr(mem,-1);
+	clr(mem, -1);
+	clr(memC, -1);
 	int n; cin >> n;
 	v.resize(n);
 	for (auto& it : v)cin >> it;
-	cout << maxSum(0);
+	cout << maxSum(0) << endl;
+	cout << max(maxSumCycle(1, 0), maxSumCycle(2, 1) + v[0]) << endl;
 }
