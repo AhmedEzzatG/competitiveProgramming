@@ -1,9 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class  DSU_bipartiteness {
+class DSU_bipartiteness {
 	vector<int> bipartite, rank;
 	vector<pair<int, int>> parent;
+public:
 	DSU_bipartiteness(int n) {
 		bipartite = rank = vector<int>(n + 1, 1);
 		parent = vector<pair<int, int>>(n + 1);

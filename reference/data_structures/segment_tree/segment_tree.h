@@ -5,15 +5,6 @@ template<class node>
 class segment_tree {
 	int n;
 	vector<node> tree, lazy, arr;
-public:
-	segment_tree(int n = 0) :n(n) { arr = vector<node>(n); lazy = tree = vector<node>(4 * n); }
-
-	segment_tree(vector<node>& _arr) {
-		n = sz(_arr) - 1;
-		lazy = tree = vector<node>(4 * n);
-		arr = _arr;
-		build(1, 1, n);
-	}
 
 	node merge(node a, node b);
 
@@ -62,6 +53,19 @@ public:
 		node a = query(idx << 1, start, mid, from, to);
 		node b = query(idx << 1 | 1, mid + 1, end, from, to);
 		return merge(a, b);
+	}
+
+public:
+	segment_tree(int n = 0) :n(n) { 
+		arr = vector<node>(n);
+		lazy = tree = vector<node>(4 * n); 
+	}
+
+	segment_tree(vector<node>& _arr) {
+		n = _arr.size() - 1;
+		lazy = tree = vector<node>(4 * n);
+		arr = _arr;
+		build(1, 1, n);
 	}
 
 	void update(int from, int to, node val) {

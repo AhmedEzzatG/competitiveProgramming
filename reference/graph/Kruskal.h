@@ -1,5 +1,5 @@
 #include"..\data_structures\disjoint_set_union\DSU.h"
-#include"..\data_structures\edge.h"
+#include"edge.h"
 
 vector<edge> edgeList;
 //O(m*log(m))
@@ -44,16 +44,15 @@ pair<int, vector<edge>> SMST_Kruskal(int n) {
 	pair<int, vector<edge>> ret = { INT_MAX,vector<edge>() };
 	for (int i = 0; i < take.size(); i++) {
 		uf = DSU(n);
-		vector<edge> edges = take;
-		swap(edges[i], edges.back());
-		edges.pop_back();
+		vector<edge> edges;
 		mstCost = 0;
 		for (int j = 0; j < take.size(); j++) {
 			if (i == j)continue;
 			uf.union_sets(take[i].from, take[i].to);
 			mstCost += take[i].weight;
+			edges.push_back(take[i]);
 		}
-		for (auto e : leave) {
+		for (edge e : leave) {
 			if (uf.union_sets(e.from, e.to)) {
 				mstCost += e.weight;
 				edges.push_back(e);

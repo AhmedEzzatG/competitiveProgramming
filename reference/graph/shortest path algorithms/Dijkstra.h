@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include"..\..\data_structures\edge.h"
+#include"..\edge.h"
 using namespace std;
 vector<vector<edge>> adj;
 

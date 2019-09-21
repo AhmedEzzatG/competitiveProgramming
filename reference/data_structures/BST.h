@@ -10,15 +10,10 @@ public:
 		key(key), left(left), right(right), parent(parent) {}
 };
 
-class BST {
-	typedef node* nodeptr;
-public:
-	nodeptr root;
-	BST() : root(NULL) {}
-	nodeptr find(int key) { return find(root, key); }
-	void insert(int key) { root = insert(root, key); }
-	void erase(int key) { root = erase(root, key); }
+typedef node* nodeptr;
 
+class BST {
+private:
 	nodeptr minimum(nodeptr root) {
 		if (root->left == NULL)return root;
 		return minimum(root->left);
@@ -86,9 +81,15 @@ public:
 		}
 		return root;
 	}
+public:
+	nodeptr root;
+	BST() : root(NULL) {}
+	nodeptr find(int key) { return find(root, key); }
+	void insert(int key) { root = insert(root, key); }
+	void erase(int key) { root = erase(root, key); }
 };
 
-void inorder(node* root) {
+void inorder(nodeptr root) {
 	if (root == NULL)return;
 	inorder(root->left);
 	cout << root->key;
@@ -97,14 +98,14 @@ void inorder(node* root) {
 	inorder(root->right);
 }
 
-void preorder(node* root) {
+void preorder(nodeptr root) {
 	if (root == NULL)return;
 	cout << root->key << ' ';
 	preorder(root->left);
 	preorder(root->right);
 }
 
-void postorder(node* root) {
+void postorder(nodeptr root) {
 	if (root == NULL)return;
 	postorder(root->left);
 	postorder(root->right);

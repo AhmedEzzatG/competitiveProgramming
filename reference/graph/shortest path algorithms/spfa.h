@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include"..\..\data_structures\edge.h"
+#include"..\edge.h"
 using namespace std;
 #define oo 0x3f3f3f3fLL
 
