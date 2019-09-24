@@ -31,24 +31,28 @@ void run() {
 #endif
 }
 
-map<int, int> mem[5608];
-vector<pair<int, int>> v;
-int longestIncreasingSubsequence(int index, int load) {
-	if (load < 0 || index == sz(v))return 0;
-	if (mem[index].count(load))return mem[index][load];
-	int& rt = mem[index][load];
-	rt = longestIncreasingSubsequence(index + 1, load);
-	if (v[index].first <= load)
-		rt = max(rt, 1 + longestIncreasingSubsequence(index + 1, min(load - v[index].first, v[index].second)));
-	return rt;
-}
 
 int main() {
 	run();
 	int a, b;
-	while (cin >> a >> b) v.emplace_back(a, b - a);
-	int ans = 0;
-	for (int i = 0; i < sz(v); i++)
-		ans = max(ans, 1 + longestIncreasingSubsequence(i + 1, v[i].second));
-	cout << ans;
+	vector<pair<int, int>> v;
+	while (cin >> a >> b) {
+		v.emplace_back(a, b);
+	}
+	sort(all(v), [](const ii& a, const ii& b) {
+		return a.second > b.second;
+		});
+	vector<int> dp(sz(v) + 1);
+	dp[0] = oo;
+	int mx = 0;
+	for (int index = 0; index < sz(v); index++) {
+		for (int i = mx; i >= 0; i--) {
+			if (v[index].first <= dp[i]) {
+				int remLoad = min(dp[i], v[index].second) - v[index].first;
+				dp[i + 1] = max(dp[i + 1], remLoad);
+				mx = max(mx, i + 1);
+			}
+		}
+	}
+	cout << mx << endl;
 }

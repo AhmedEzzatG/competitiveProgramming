@@ -31,23 +31,33 @@ void run() {
 #endif
 }
 
-ll mem[2][10001];
+int n, m, t;
+vector<int> v;
+vector<vector<vi>> mem;
+int solve(int index, int m, int remSize) {
+	if (index == sz(v) || m == 0)return 0;
+	int& rt = mem[index][m][remSize];
+	if (~rt)return rt;
+	rt = solve(index + 1, m, remSize);
+	rt = max(rt, solve(index, m - 1, t));
+	if(v[index] <= remSize)
+		rt = max(rt, 1 + solve(index + 1, m, remSize - v[index]));
+	return rt;
+}
+
 int main() {
 	run();
-	int n;
-	while (cin >> n) {
-		clr(mem, 0);
-		vector<ll> v(n);
-		for (auto& a : v)cin >> a;
-		bool cur = 0;
-		for (int len = 1; len < n; len++) {
-			cur ^= 1;
-			for (int i = 0; i + len < n; i++) {
-				int j = i + len;
-				if (cur) mem[cur][i] = max(v[i] + mem[cur ^ 1][i + 1], mem[cur ^ 1][i] + v[j]);
-				else mem[cur][i] = min(mem[cur ^ 1][i], mem[cur ^ 1][i + 1]);
-			}
+	int c; cin >> c;
+	while (c--) {
+		cin >> n >> t >> m;
+		v = vector<int>(n);
+		mem = vector<vector<vi>>(n, vector<vi>(m + 1, vi(t + 1, -1)));
+		char ch;
+		for (int i = 0; i < n; i++) {
+			if (i)cin >> ch;
+			cin >> v[i];
 		}
-		cout << mem[cur][0] << endl;
+		cout << solve(0, m, t) << endl;
+		if (c)cout << endl;
 	}
 }

@@ -24,7 +24,7 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
@@ -33,19 +33,26 @@ void run() {
 
 const int MAX = 1001;
 int mem[MAX][MAX];
+void add(int& a, int b) {
+	if ((a += b) >= mod)a -= mod;
+}
 int numberOfPathsInMatrix(int m, int n) {
 	if (m == 1 || n == 1)return 1;
 	int& rt = mem[m][n];
 	if (~rt)return rt;
-	rt += numberOfPathsInMatrix(m - 1, n);
-	rt += numberOfPathsInMatrix(m, n - 1);
+	rt = 0;
+	add(rt, numberOfPathsInMatrix(m - 1, n));
+	add(rt, numberOfPathsInMatrix(m, n - 1));
 	return rt;
 }
 
 int main() {
 	run();
-	clr(mem, -1);
-	int m, n;
-	cin >> m >> n;
-	cout << numberOfPathsInMatrix(m, n);
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		int m, n;
+		cin >> m >> n;
+		cout << numberOfPathsInMatrix(m, n) << endl;
+	}
 }

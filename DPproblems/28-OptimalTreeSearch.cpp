@@ -31,23 +31,35 @@ void run() {
 #endif
 }
 
-ll mem[2][10001];
+const int MAX = 251;
+int mem[MAX][MAX];
+vector<int> sum;
+int sumFrq(int left, int right) {
+	if (left > right)return 0;
+	return sum[right] - (left ? sum[left - 1] : 0);
+}
+
+int cost(int left, int right) {
+	if (left >= right)return 0;
+	int& rt = mem[left][right];
+	if (~rt)return rt;
+	rt = oo;
+	for (int root = left; root <= right; root++) {
+		int leftTree = cost(left, root - 1) + sumFrq(left, root - 1);
+		int rightTree = cost(root + 1, right) + sumFrq(root + 1, right);
+		rt = min(rt, leftTree + rightTree);
+	}
+	return rt;
+}
+
 int main() {
 	run();
-	int n;
-	while (cin >> n) {
-		clr(mem, 0);
-		vector<ll> v(n);
-		for (auto& a : v)cin >> a;
-		bool cur = 0;
-		for (int len = 1; len < n; len++) {
-			cur ^= 1;
-			for (int i = 0; i + len < n; i++) {
-				int j = i + len;
-				if (cur) mem[cur][i] = max(v[i] + mem[cur ^ 1][i + 1], mem[cur ^ 1][i] + v[j]);
-				else mem[cur][i] = min(mem[cur ^ 1][i], mem[cur ^ 1][i + 1]);
-			}
-		}
-		cout << mem[cur][0] << endl;
+	clr(mem, -1);
+	int n; cin >> n;
+	sum = vector<int>(n);
+	for (int i = 0; i < n; i++) {
+		cin >> sum[i];
+		if (i) sum[i] += sum[i - 1];
 	}
+	cout << cost(0, n - 1) << endl;
 }

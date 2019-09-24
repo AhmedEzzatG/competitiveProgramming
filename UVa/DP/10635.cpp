@@ -1,6 +1,6 @@
-#include<bits/stdc++.h>
-#include<unordered_map>
-#include<unordered_set>
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <unordered_set>
 using namespace std;
 #define endl "\n"
 #define oo 0x3f3f3f3fLL
@@ -24,8 +24,8 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	//freopen("input.in", "r", stdin);
-	//freopen("output.out", "w", stdout);
+	freopen("input.in", "r", stdin);
+	freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
@@ -68,16 +68,23 @@ public:
 int main() {
 	run();
 	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		for (int i = 0; i < n; i++)cin >> v[i];
-		segment_tree seg(*max_element(all(v)));
+	for (int I = 1; I <= t; I++) {
+		cout << "Case " << I << ": ";
+		int n, p, q;
+		cin >> n >> p >> q;
+		n *= n; p++; q++;
+		vector<int> v(p), idx(n + 1);
+		for (int i = 0; i < p; i++)cin >> v[i];
+		for (int i = 1; i <= q; i++) {
+			int x; cin >> x;
+			idx[x] = i;
+		}
+		for (int i = 0; i < p; i++) v[i] = idx[v[i]];
+		segment_tree seg(q);
 		int ans = 0;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < p; i++) {
 			if (v[i] == 0)continue;
-			int cur = v[i] + (v[i] > 1 ? seg.query(v[i] - 1) : 0);
+			int cur = 1 + (v[i] > 1 ? seg.query(v[i] - 1) : 0);
 			ans = max(ans, cur);
 			seg.update(v[i], cur);
 		}

@@ -34,6 +34,8 @@ void run() {
 const int MAX = 1000001;
 int mem[MAX], scores[3];
 int numberOfWaysToScore(int score) {
+	if (score < 0)return 0;
+	if (score == 0)return 1;
 	int& rt = mem[score];
 	if (~rt)return rt;
 	rt = 0;

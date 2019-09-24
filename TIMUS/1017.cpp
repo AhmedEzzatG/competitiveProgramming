@@ -31,23 +31,21 @@ void run() {
 #endif
 }
 
-ll mem[2][10001];
+const int MAX = 501;
+ll mem[MAX][MAX];
+ll solve(int n, int last) {
+	if (n == 0)return 1;
+	if (last > n || n < 0)return 0;
+	ll& rt = mem[n][last];
+	if (~rt)return rt;
+	rt = solve(n, last + 1);
+	rt += solve(n - last, last + 1);
+	return rt;
+}
 int main() {
 	run();
+	clr(mem, -1);
 	int n;
-	while (cin >> n) {
-		clr(mem, 0);
-		vector<ll> v(n);
-		for (auto& a : v)cin >> a;
-		bool cur = 0;
-		for (int len = 1; len < n; len++) {
-			cur ^= 1;
-			for (int i = 0; i + len < n; i++) {
-				int j = i + len;
-				if (cur) mem[cur][i] = max(v[i] + mem[cur ^ 1][i + 1], mem[cur ^ 1][i] + v[j]);
-				else mem[cur][i] = min(mem[cur ^ 1][i], mem[cur ^ 1][i + 1]);
-			}
-		}
-		cout << mem[cur][0] << endl;
-	}
+	cin >> n;
+	cout << solve(n, 1) - 1 << endl;
 }

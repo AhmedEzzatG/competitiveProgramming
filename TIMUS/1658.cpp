@@ -30,24 +30,40 @@ void run() {
 	//freopen("input.in", "r", stdin);
 #endif
 }
+int mem[901][8101];
+int solve(int s1, int s2) {
+	if (s1 == 0 && s2 == 0)return 0;
+	if (s1 < 0 || s2 < 0)return oo;
+	int& rt = mem[s1][s2];
+	if (~rt)return rt;
+	rt = oo;
+	for (int i = 0; i < 10; i++)
+		rt = min(rt, 1 + solve(s1 - i, s2 - i * i));
+	return rt;
+}
 
-ll mem[2][10001];
+void build(int s1, int s2) {
+	if (s1 == 0 && s2 == 0)return;
+	int rt = solve(s1, s2);
+	for (int i = 0; i < 10; i++) {
+		if (rt == 1 + solve(s1 - i, s2 - i * i)) {
+			cout << i;
+			build(s1 - i, s2 - i * i);
+			return;
+		}
+	}
+}
+
 int main() {
 	run();
-	int n;
-	while (cin >> n) {
-		clr(mem, 0);
-		vector<ll> v(n);
-		for (auto& a : v)cin >> a;
-		bool cur = 0;
-		for (int len = 1; len < n; len++) {
-			cur ^= 1;
-			for (int i = 0; i + len < n; i++) {
-				int j = i + len;
-				if (cur) mem[cur][i] = max(v[i] + mem[cur ^ 1][i + 1], mem[cur ^ 1][i] + v[j]);
-				else mem[cur][i] = min(mem[cur ^ 1][i], mem[cur ^ 1][i + 1]);
-			}
-		}
-		cout << mem[cur][0] << endl;
+	clr(mem, -1);
+	int t; cin >> t;
+	while (t--) {
+		int s1, s2;
+		cin >> s1 >> s2;
+		if (s1 <= 900 && s2 <= 8100 && solve(s1, s2) <= 100)
+			build(s1, s2);
+		else cout << "No solution";
+		cout << endl;
 	}
 }
