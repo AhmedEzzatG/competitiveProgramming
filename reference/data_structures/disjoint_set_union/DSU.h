@@ -1,8 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class DSU {
-public:
+struct DSU {
 	vector<int> rank, parent, size;
 	vector<vector<int>> component;
 	int	forsets;

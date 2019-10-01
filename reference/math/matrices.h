@@ -16,7 +16,7 @@ matrix identity(int n) {
 	return rt;
 }
 
-matrix addIdentity(const matrix a) {
+matrix addIdentity(const matrix& a) {
 	matrix rt = a;
 	for (int i = 0; i < sz(a); i++)rt[i][i] += 1;
 	return rt;

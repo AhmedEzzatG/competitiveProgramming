@@ -10,9 +10,14 @@ template<class Int>
 Int flipBit(Int num, int ind) { return (num ^ ((Int)(1) << ind)); }
 
 template<class Int>
-Int leastBit(Int num) {
-	return num & -num;
-}
+Int leastBit(Int num) { return (num & -num); }
+
+//num%mod, mod is a power of 2
+template<class Int>
+Int Mod(Int num, Int mod) { return (num & mod - 1); }
+
+template<class Int>
+bool isPowerOfTwo(Int num) { return (num & num - 1) == 0; }
 
 // for run __builtin_popcount in visual
 #ifdef _MSC_VER

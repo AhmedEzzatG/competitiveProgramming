@@ -10,9 +10,25 @@ struct node {
 	}
 };
 
-class segment_tree {
+struct segment_tree {
 	int n;
 	vector<node> tree, arr;
+
+	segment_tree(int n = 0) :n(n) {
+		arr = vector<node>(n);
+		tree = vector<node>(4 * n);
+	}
+
+	segment_tree(vector<node>& _arr) {
+		n = _arr.size() - 1;
+		tree = vector<node>(4 * n);
+		arr = _arr;
+		build(1, 1, n);
+	}
+
+	ll query(int from, int to) {
+		return query(1, 1, n, from, to).getMax();
+	}
 
 	node merge(node a, node b) {
 		node c;
@@ -45,21 +61,4 @@ class segment_tree {
 		return merge(a, b);
 	}
 
-public:
-
-	segment_tree(int n = 0) :n(n) {
-		arr = vector<node>(n);
-		tree = vector<node>(4 * n);
-	}
-
-	segment_tree(vector<node>& _arr) {
-		n = _arr.size() - 1;
-		tree = vector<node>(4 * n);
-		arr = _arr;
-		build(1, 1, n);
-	}
-
-	ll query(int from, int to) {
-		return query(1, 1, n, from, to).getMax();
-	}
 };

@@ -2,9 +2,29 @@
 using namespace std;
 
 template<class node>
-class segment_tree {
+struct segment_tree {
 	int n;
 	vector<node> tree, lazy, arr;
+
+	segment_tree(int n = 0) :n(n) { 
+		arr = vector<node>(n);
+		lazy = tree = vector<node>(4 * n); 
+	}
+
+	segment_tree(vector<node>& _arr) {
+		n = _arr.size() - 1;
+		lazy = tree = vector<node>(4 * n);
+		arr = _arr;
+		build(1, 1, n);
+	}
+
+	void update(int from, int to, node val) {
+		update(1, 1, n, from, to, val);
+	}
+
+	node query(int from, int to) {
+		return query(1, 1, n, from, to);
+	}
 
 	node merge(node a, node b);
 
@@ -26,14 +46,13 @@ class segment_tree {
 			lazy[idx << 1 | 1] += lazy[idx];
 		}
 		lazy[idx] = 0;
+
 	}
 
 	void update(int idx, int start, int end, int from, int to, node val) {
 		if (to < start || end < from)return;
 		if (from <= start && end <= to) {
-			lazy[idx] += val;
-			propagate(idx, start, end);
-			return;
+			lazy[idx] += val; return;
 		}
 		int mid = start + end >> 1;
 		propagate(idx, start, end);
@@ -55,24 +74,4 @@ class segment_tree {
 		return merge(a, b);
 	}
 
-public:
-	segment_tree(int n = 0) :n(n) { 
-		arr = vector<node>(n);
-		lazy = tree = vector<node>(4 * n); 
-	}
-
-	segment_tree(vector<node>& _arr) {
-		n = _arr.size() - 1;
-		lazy = tree = vector<node>(4 * n);
-		arr = _arr;
-		build(1, 1, n);
-	}
-
-	void update(int from, int to, node val) {
-		update(1, 1, n, from, to, val);
-	}
-
-	node query(int from, int to) {
-		return query(1, 1, n, from, to);
-	}
 };
