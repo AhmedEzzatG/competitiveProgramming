@@ -32,41 +32,31 @@ void run() {
 }
 
 const int MAX = 1001;
-int Min[MAX][MAX], Max[MAX][MAX], mem[MAX][MAX];
-vector<int> v;
-int minInRange(int left, int right) {
-	if (left == right)return v[left];
-	int& rt = Min[left][right];
-	if (~rt)return rt;
-	rt = min(v[left], minInRange(left + 1, right));
-	return rt;
+int mem[MAX][MAX];
+vector<vi> v;
+int sizeSubMatrix(int i, int j) {
+	if (i < 0 || j < 0 || v[i][j] == 0) return 0;
+	int& rt = mem[i][j];
+	if (~rt) return rt;
+	int up = sizeSubMatrix(i - 1, j);
+	int left = sizeSubMatrix(i, j - 1);
+	int commen = sizeSubMatrix(i - 1, j - 1);
+	return rt = min({ up, left,commen }) + 1;
 }
 
-int maxInRange(int left, int right) {
-	if (left == right)return v[left];
-	int& rt = Min[left][right];
-	if (~rt)return rt;
-	rt = max(v[left], maxInRange(left + 1, right));
-	return rt;
-}
-
-int removeFromEnd(int left, int right) {
-	int& rt = mem[left][right];
-	if (~rt)return rt;
-	if (2 * minInRange(left, right) > maxInRange(left, right))
-		return rt = 0;
-	rt = min(removeFromEnd(left + 1, right),
-		removeFromEnd(left, right - 1));
-	return rt;
-}
 
 int main() {
 	run();
-	clr(Min, -1);
-	clr(Max, -1);
 	clr(mem, -1);
 	int n; cin >> n;
-	v.resize(n);
-	for (auto& it : v)cin >> it;
-	cout << removeFromEnd(0, sz(v) - 1);
+	v = vector<vi>(n, vi(n));
+	for (int i = 0; i < n; i++)for (int j = 0; j < n; j++)
+		cin >> v[i][j];
+	int mx = 0;
+	for (int i = 0; i < n; i++)for (int j = 0; j < n; j++) {
+		mx = max(mx, sizeSubMatrix(i, j));
+		if (sizeSubMatrix(i, j) == 4)
+			cout << i << ' ' << j << endl;
+	}
+	cout << mx << endl;
 }

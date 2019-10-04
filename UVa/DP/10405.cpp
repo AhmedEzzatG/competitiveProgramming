@@ -25,48 +25,31 @@ void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
 	freopen("input.in", "r", stdin);
-	//freopen("output.out", "w", stdout);
+	freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
 
 const int MAX = 1001;
-int Min[MAX][MAX], Max[MAX][MAX], mem[MAX][MAX];
-vector<int> v;
-int minInRange(int left, int right) {
-	if (left == right)return v[left];
-	int& rt = Min[left][right];
+int mem[MAX][MAX];
+string s1, s2;
+int longestCommonSubsequence(int index1 = 0, int index2 = 0) {
+	if (index1 == sz(s1) || index2 == sz(s2))return 0;
+	int& rt = mem[index1][index2];
 	if (~rt)return rt;
-	rt = min(v[left], minInRange(left + 1, right));
-	return rt;
-}
-
-int maxInRange(int left, int right) {
-	if (left == right)return v[left];
-	int& rt = Min[left][right];
-	if (~rt)return rt;
-	rt = max(v[left], maxInRange(left + 1, right));
-	return rt;
-}
-
-int removeFromEnd(int left, int right) {
-	int& rt = mem[left][right];
-	if (~rt)return rt;
-	if (2 * minInRange(left, right) > maxInRange(left, right))
-		return rt = 0;
-	rt = min(removeFromEnd(left + 1, right),
-		removeFromEnd(left, right - 1));
+	if (s1[index1] == s2[index2])
+		rt = 1 + longestCommonSubsequence(index1 + 1, index2 + 1);
+	rt = max(rt, longestCommonSubsequence(index1 + 1, index2));
+	rt = max(rt, longestCommonSubsequence(index1, index2 + 1));
 	return rt;
 }
 
 int main() {
 	run();
-	clr(Min, -1);
-	clr(Max, -1);
-	clr(mem, -1);
-	int n; cin >> n;
-	v.resize(n);
-	for (auto& it : v)cin >> it;
-	cout << removeFromEnd(0, sz(v) - 1);
+	while (getline(cin,s1)) {
+		getline(cin, s2);
+		clr(mem, -1);
+		cout << longestCommonSubsequence() << endl;
+	}
 }
