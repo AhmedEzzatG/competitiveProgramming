@@ -31,7 +31,7 @@ int LCA(int u, int v) {
 void build() {
 	int n;
 	cin >> n;
-	logN = 1 + log(n);
+	logN = log2(n);
 	adj = vector<vector<int>>(n + 1);
 	lca = vector<vector<int>>(n + 1, vector<int>(logN + 1, -1));
 	depth = vector<int>(n + 1);
