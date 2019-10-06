@@ -1,8 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class node {
-public:
+struct node {
 	int key;
 	node* left, * right, * parent;
 	node() { key = 0; left = right = parent = NULL; }
@@ -13,7 +12,12 @@ public:
 typedef node* nodeptr;
 
 class BST {
-private:
+public:
+	nodeptr root;
+	BST() : root(NULL) {}
+	nodeptr find(int key) { return find(root, key); }
+	void insert(int key) { root = insert(root, key); }
+	void erase(int key) { root = erase(root, key); }
 	nodeptr minimum(nodeptr root) {
 		if (root->left == NULL)return root;
 		return minimum(root->left);
@@ -54,7 +58,7 @@ private:
 		}
 		return root;
 	}
-	nodeptr erase(nodeptr root,int key) {
+	nodeptr erase(nodeptr root, int key) {
 		if (root == NULL)return root;
 		if (key < root->key) {
 			root->left = erase(root->left, key);
@@ -81,12 +85,6 @@ private:
 		}
 		return root;
 	}
-public:
-	nodeptr root;
-	BST() : root(NULL) {}
-	nodeptr find(int key) { return find(root, key); }
-	void insert(int key) { root = insert(root, key); }
-	void erase(int key) { root = erase(root, key); }
 };
 
 void inorder(nodeptr root) {
