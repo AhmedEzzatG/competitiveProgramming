@@ -24,41 +24,37 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	//freopen("input.in", "r", stdin);
+	freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
-
-const int MAX = 1001;
+const int MAX = 101;
 int mem[MAX][MAX];
-vector<vi> v;
-int sizeSubMatrix(int i, int j) {
-	if (i < 0 || j < 0 || v[i][j] == 0) return 0;
-	int& rt = mem[i][j];
-	if (~rt) return rt;
-	int up = sizeSubMatrix(i - 1, j);
-	int left = sizeSubMatrix(i, j - 1);
-	int commen = sizeSubMatrix(i - 1, j - 1);
-	return rt = min({ up, left,commen }) + 1;
+vector<int> point;
+int cutRod(int left, int right) {
+	if (right < left)return 0;
+	int start = point[left - 1], end = point[right + 1];
+	if (right == left)return end - start;
+	int& rt = mem[left][right];
+	if (~rt)return rt;
+	rt = oo;
+	for (int k = left; k <= right; k++)
+		rt = min(rt, cutRod(left, k - 1) + cutRod(k + 1, right));
+	return rt += end - start;
 }
-
 
 int main() {
 	run();
 	int t; cin >> t;
 	while (t--) {
 		clr(mem, -1);
-		int n, m;
-		cin >> n >> m;
-		v = vector<vi>(n, vi(m));
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++)
-			cin >> v[i][j];
-		int mx = 0;
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++) {
-			mx = max(mx, sizeSubMatrix(i, j));
-		}
-		cout << mx << endl;
+		int l, n;
+		cin >> n >> l;
+		point = vector<int>(n + 1);
+		for (int i = 1; i <= n; i++) cin >> point[i];
+		point.push_back(l);
+		cout << cutRod(1, n) << endl;
 	}
 }

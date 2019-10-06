@@ -24,41 +24,33 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	//freopen("input.in", "r", stdin);
+	freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
-
 const int MAX = 1001;
 int mem[MAX][MAX];
-vector<vi> v;
-int sizeSubMatrix(int i, int j) {
-	if (i < 0 || j < 0 || v[i][j] == 0) return 0;
-	int& rt = mem[i][j];
-	if (~rt) return rt;
-	int up = sizeSubMatrix(i - 1, j);
-	int left = sizeSubMatrix(i, j - 1);
-	int commen = sizeSubMatrix(i - 1, j - 1);
-	return rt = min({ up, left,commen }) + 1;
+string a, b, c;
+int isInterleave(int indexA, int indexB, int indexC) {
+	if (indexC == (int)(c.size()))return true;
+	int rt = mem[indexA][indexC];// indexB is inference variable
+	if (~rt)return rt;
+	rt = 0;
+	if (indexA < (int)(a.size()) && a[indexA] == c[indexC])
+		rt |= isInterleave(indexA + 1, indexB, indexC + 1);
+	if (indexB < (int)(b.size()) && b[indexB] == c[indexC])
+		rt |= isInterleave(indexA, indexB + 1, indexC + 1);
+	return rt;
 }
-
 
 int main() {
 	run();
 	int t; cin >> t;
 	while (t--) {
 		clr(mem, -1);
-		int n, m;
-		cin >> n >> m;
-		v = vector<vi>(n, vi(m));
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++)
-			cin >> v[i][j];
-		int mx = 0;
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++) {
-			mx = max(mx, sizeSubMatrix(i, j));
-		}
-		cout << mx << endl;
+		cin >> a >> b >> c;
+		cout << isInterleave(0, 0, 0) << endl;
 	}
 }

@@ -31,34 +31,23 @@ void run() {
 #endif
 }
 
-const int MAX = 1001;
-int mem[MAX][MAX];
-vector<vi> v;
-int sizeSubMatrix(int i, int j) {
-	if (i < 0 || j < 0 || v[i][j] == 0) return 0;
-	int& rt = mem[i][j];
-	if (~rt) return rt;
-	int up = sizeSubMatrix(i - 1, j);
-	int left = sizeSubMatrix(i, j - 1);
-	int commen = sizeSubMatrix(i - 1, j - 1);
-	return rt = min({ up, left,commen }) + 1;
-}
-
-
+const ll MAX = 1e4 + 1;
+ll mem[MAX];
 int main() {
 	run();
+	vector<int> primes = { 2,3,5 };
+	set<ll> st;
+	st.insert(1);
+	int idx = 0; ll ugly = 0;
+	while (idx < MAX) {
+		ugly = *st.begin(); st.erase(st.begin());
+		mem[idx++] = ugly;
+		for (auto it : primes)
+			st.insert(ugly * it);
+	}
 	int t; cin >> t;
 	while (t--) {
-		clr(mem, -1);
-		int n, m;
-		cin >> n >> m;
-		v = vector<vi>(n, vi(m));
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++)
-			cin >> v[i][j];
-		int mx = 0;
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++) {
-			mx = max(mx, sizeSubMatrix(i, j));
-		}
-		cout << mx << endl;
+		int n; cin >> n;
+		cout << mem[n - 1] << endl;
 	}
 }

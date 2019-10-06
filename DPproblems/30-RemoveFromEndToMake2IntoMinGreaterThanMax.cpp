@@ -31,9 +31,8 @@ void run() {
 #endif
 }
 
-const int MAX = 1001;
-int Min[MAX][MAX], Max[MAX][MAX], mem[MAX][MAX];
 vector<int> v;
+vector<vector<int>> Min, Max, mem;
 int minInRange(int left, int right) {
 	if (left == right)return v[left];
 	int& rt = Min[left][right];
@@ -44,7 +43,7 @@ int minInRange(int left, int right) {
 
 int maxInRange(int left, int right) {
 	if (left == right)return v[left];
-	int& rt = Min[left][right];
+	int& rt = Max[left][right];
 	if (~rt)return rt;
 	rt = max(v[left], maxInRange(left + 1, right));
 	return rt;
@@ -55,18 +54,19 @@ int removeFromEnd(int left, int right) {
 	if (~rt)return rt;
 	if (2 * minInRange(left, right) > maxInRange(left, right))
 		return rt = 0;
-	rt = min(removeFromEnd(left + 1, right),
+	rt = 1 + min(removeFromEnd(left + 1, right),
 		removeFromEnd(left, right - 1));
 	return rt;
 }
 
 int main() {
 	run();
-	clr(Min, -1);
-	clr(Max, -1);
-	clr(mem, -1);
-	int n; cin >> n;
-	v.resize(n);
-	for (auto& it : v)cin >> it;
-	cout << removeFromEnd(0, sz(v) - 1);
+	int t; cin >> t;
+	while (t--) {
+		int n; cin >> n;
+		Min = Max = mem = vector<vi>(n, vi(n, -1));
+		v.resize(n);
+		for (auto& it : v)cin >> it;
+		cout << removeFromEnd(0, sz(v) - 1) << endl;
+	}
 }

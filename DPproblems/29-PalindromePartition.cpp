@@ -32,6 +32,7 @@ void run() {
 }
 const int MAX = 1001;
 int palindrome[MAX][MAX], mem[MAX];
+vector<vector<string>> build[MAX];
 string s;
 int isPalindrome(int left, int right) {
 	if (left > right)return 0;
@@ -56,8 +57,31 @@ int palindromePartition(int start) {
 	return rt;
 }
 
+void palindromePartition_allSolution(int start) {
+	if (start == (int)(s.size()))return;
+	vector<vector<string>>& rt = build[start];
+	if ((int)(rt.size()))return;
+	string cur = "";
+	for (int end = start; end < (int)(s.size()); end++) {
+		cur.push_back(s[end]);
+		if (isPalindrome(start, end)) {
+			if (end + 1 == s.size())
+				rt.push_back(vector<string>(1, cur));
+			else {
+				palindromePartition_allSolution(end + 1);
+				for (auto& it : build[end + 1]) {
+					rt.push_back(vector<string>(1, cur));
+					rt.back().insert(rt.back().end(), it.begin(), it.end());
+				}
+			}
+		}
+	}
+}
+
 int main() {
 	run();
-	string s; cin >> s;
-	cout << palindromePartition(0);
+	clr(mem, -1);
+	clr(palindrome, -1);
+	cin >> s;
+	cout << palindromePartition(0) << endl;
 }

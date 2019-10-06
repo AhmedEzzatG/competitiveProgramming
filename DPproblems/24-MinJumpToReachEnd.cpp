@@ -24,43 +24,33 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
 
-const int MAX = 1001;
-int  mem[MAX];
-vector<int> jumps;
+vector<int> jumps, mem;
 int minJumpToReachEnd(int index) {
-	if (index >= sz(jumps))return 0;
+	if (index + 1 == sz(jumps))return 0;
 	int& rt = mem[index];
 	if (~rt)return rt;
 	rt = oo;
-	for (int i = 1; i <= jumps[index]; i++)
-		rt = min(rt, minJumpToReachEnd(index + i));
-	return rt;
-}
-
-int minJumpToReachEnd(int index) {
-	if (index >= sz(jumps))return 0;
-	int& rt = mem[index];
-	if (~rt)return rt;
-	int rt = oo;
-	for (int last = index + 1; last <= sz(jumps); last++) {
-		if (last - index >= jumps[index])
-			rt = min(rt, minJumpToReachEnd(last));
-	}
+	for (int i = 1; i <= jumps[index] && index + i < sz(jumps); i++)
+		rt = min(rt, 1 + minJumpToReachEnd(index + i));
 	return rt;
 }
 
 int main() {
 	run();
-	clr(mem, -1);
-	int n; cin >> n;
-	jumps.resize(n);
-	for (auto it : jumps)cin >> it;
-	cout << minJumpToReachEnd(0);
+	int t; cin >> t;
+	while (t--) {
+		int n; cin >> n;
+		jumps = vector<int>(n);
+		mem = vector<int>(n + 1, -1);
+		for (auto& it : jumps)cin >> it;
+		int ans = minJumpToReachEnd(0);
+		cout << (ans == oo ? -1 : ans) << endl;
+	}
 }

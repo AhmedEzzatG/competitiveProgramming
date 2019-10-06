@@ -32,33 +32,27 @@ void run() {
 }
 
 const int MAX = 1001;
-int mem[MAX][MAX];
-vector<vi> v;
-int sizeSubMatrix(int i, int j) {
-	if (i < 0 || j < 0 || v[i][j] == 0) return 0;
-	int& rt = mem[i][j];
-	if (~rt) return rt;
-	int up = sizeSubMatrix(i - 1, j);
-	int left = sizeSubMatrix(i, j - 1);
-	int commen = sizeSubMatrix(i - 1, j - 1);
-	return rt = min({ up, left,commen }) + 1;
+int mem[MAX][MAX], n, m;
+string s1, s2;
+int longestCommonSubstring(int index1, int index2) {
+	if (index1 == n || index2 == m)return 0;
+	int& rt = mem[index1][index2];
+	if (~rt)return rt;
+	int rt = 0;
+	if (s1[index1] == s2[index2])
+		rt = 1 + longestCommonSubstring(index1 + 1, index2 + 1);
+	return rt;
 }
-
 
 int main() {
 	run();
 	int t; cin >> t;
 	while (t--) {
 		clr(mem, -1);
-		int n, m;
-		cin >> n >> m;
-		v = vector<vi>(n, vi(m));
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++)
-			cin >> v[i][j];
+		cin >> n >> m >> s1 >> s2;
 		int mx = 0;
-		for (int i = 0; i < n; i++)for (int j = 0; j < m; j++) {
-			mx = max(mx, sizeSubMatrix(i, j));
-		}
+		for (int i = 0; i < n; i++) for (int j = 0; j < m; j++)
+			mx = max(mx, longestCommonSubstring(i, j));
 		cout << mx << endl;
 	}
 }
