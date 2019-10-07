@@ -30,26 +30,29 @@ void run() {
 	//freopen("input.in", "r", stdin);
 #endif
 }
-
-const int MAX = 1001;
-int mem[MAX][MAX];
-vector<pair<int, int>> v;
-int maximumLengthChainPair(int index, int last) {
-	if (index == sz(v))return 0;
-	int& rt = mem[index][last];
+const int MAX = 101;
+int mem[MAX][MAX][MAX];
+string s1, s2;
+bool isScramble(int index1, int index2, int length) {
+	int& rt = mem[index1][index2][length];
 	if (~rt)return rt;
-	rt = maximumLengthChainPair(index + 1, last);
-	if (last == sz(v) || v[last].second < v[index].first)
-		rt = max(rt, 1 + maximumLengthChainPair(index + 1, index));
+	rt = 1;
+	for (int i = 0; i < length; i++)
+		if (s1[index1 + i] != s2[index2 + i]) {
+			rt = 0; break;
+		}
+	for (int mid = 1; mid < length; mid++) {
+		rt = rt || (isScramble(index1, index2, mid)
+			&& isScramble(index1 + mid, index2 + mid, length - mid));
+		rt = rt || (isScramble(index1 + mid, index2, length - mid) &&
+			isScramble(index1, index2 + length - mid, mid));
+	}
 	return rt;
 }
 
 int main() {
 	run();
 	clr(mem, -1);
-	int n; cin >> n;
-	v.resize(n);
-	for (auto& a : v)cin >> a.first >> a.second;
-	sort(all(v));
-	cout << maximumLengthChainPair(0, sz(v));
+	cin >> s1 >> s2;
+	cout << isScramble(0, 0, sz(s1));
 }

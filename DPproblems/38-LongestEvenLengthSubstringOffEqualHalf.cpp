@@ -24,32 +24,39 @@ const int dc[]{ 0, 1, 1, 1, 0, -1, -1, -1 };
 void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
-	freopen("input.in", "r", stdin);
+	//freopen("input.in", "r", stdin);
 	//freopen("output.out", "w", stdout);
 #else
 	//freopen("input.in", "r", stdin);
 #endif
 }
-
 const int MAX = 1001;
 int mem[MAX][MAX];
-vector<pair<int, int>> v;
-int maximumLengthChainPair(int index, int last) {
-	if (index == sz(v))return 0;
-	int& rt = mem[index][last];
+vector<int> sum;
+int getSum(int l, int r) {
+	return sum[r] - sum[l - 1];
+}
+int solve(int left, int right) {
+	if (left == right)return 0;
+	int& rt = mem[left][right];
 	if (~rt)return rt;
-	rt = maximumLengthChainPair(index + 1, last);
-	if (last == sz(v) || v[last].second < v[index].first)
-		rt = max(rt, 1 + maximumLengthChainPair(index + 1, index));
-	return rt;
+	if ((right - left) & 1) {
+		int mid = left + right >> 1;
+		if (getSum(left, mid) == getSum(mid + 1, right))
+			return rt = right - left + 1;
+	}
+	return rt = max(solve(left + 1, right), solve(left, right - 1));
 }
 
 int main() {
 	run();
-	clr(mem, -1);
-	int n; cin >> n;
-	v.resize(n);
-	for (auto& a : v)cin >> a.first >> a.second;
-	sort(all(v));
-	cout << maximumLengthChainPair(0, sz(v));
+	int t; cin >> t;
+	while (t--) {
+		clr(mem, -1);
+		string s; cin >> s;
+		sum = vector<int>(sz(s) + 1);
+		for (int i = 1; i <= sz(s); i++)
+			sum[i] = s[i - 1] + sum[i - 1] - '0';
+		cout << solve(1, sz(s)) << endl;
+	}
 }
