@@ -90,9 +90,7 @@ public:
 void inorder(nodeptr root) {
 	if (root == NULL)return;
 	inorder(root->left);
-	cout << root->key;
-	if (root->parent != NULL) cout << ' ' << root->parent->key;
-	cout << endl;
+	cout << root->key << ' ';
 	inorder(root->right);
 }
 

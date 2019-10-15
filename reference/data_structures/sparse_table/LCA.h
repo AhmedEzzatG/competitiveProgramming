@@ -11,21 +11,23 @@ void dfs(int node = 1, int parent = -1) {
 		dfs(child, node);
 }
 
-int LCA(int u, int v) {
+// return first = lca,second = distance between the two nodes
+pair<int,int> LCA(int u, int v) {
 	if (depth[u] < depth[v])
 		swap(u, v);
-	for (int k = logN; k >= 0; k--) {
+	int dis = 0;
+	for (int k = logN; k >= 0; k--)
 		if (depth[u] - (1 << k) >= depth[v])
-			u = lca[u][k];
-	}
-	if (u == v)return u;
+			u = lca[u][k], dis += (1 << k);
+	if (u == v)return { u,dis };
 	for (int k = logN; k >= 0; k--) {
-		if (lca[u][k] != lca[u][k]) {
+		if (lca[u][k] != lca[v][k]) {
 			u = lca[u][k];
 			v = lca[v][k];
+			dis += (1 << k + 1);
 		}
 	}
-	return lca[u][0];
+	return { lca[u][0],dis + 2 };
 }
 
 void build() {

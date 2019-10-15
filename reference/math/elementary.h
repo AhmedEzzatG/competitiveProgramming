@@ -1,3 +1,5 @@
+#include<bits/stdc++.h>
+using namespace std;
 #define ll long long
 #define EPS 1e-8
 #define numOfDigit(x) 1+(int)(floor(log10(x)))

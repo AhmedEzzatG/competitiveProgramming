@@ -18,7 +18,7 @@ struct BigInt {
 		}
 	}
 	BigInt operator +(const BigInt& a) {
-		BigInt b = this; b += a;
+		BigInt b = *this; b += a;
 		return b;
 	}
 	BigInt operator +=(const BigInt& a) {

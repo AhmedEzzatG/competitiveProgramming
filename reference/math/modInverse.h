@@ -32,3 +32,14 @@ ll modInv(ll a, ll m) {
 		x1 += m0;
 	return x1;
 }
+
+// mod inverse for range from 1 to n
+const int N = 1e5 + 100;
+const int mod = 1e9 + 7;
+ll inv[N];
+void inverse() {
+	inv[0] = inv[1] = 1;
+	for (int i = 2; i < N; i++) {
+		inv[i] = (mod - (mod / i) * inv[mod % i] % mod) % mod;
+	}
+}

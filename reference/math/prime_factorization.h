@@ -40,6 +40,8 @@ primeFactors multiplication(primeFactors& a, primeFactors& b) {
 			i++; j++;
 		}
 	}
+	while (i < a.size()) { rt.push_back(a[i]); i++; }
+	while (j < b.size()) { rt.push_back(b[j]); j++; }
 	return rt;
 }
 

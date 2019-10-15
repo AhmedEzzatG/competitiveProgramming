@@ -3,11 +3,14 @@
 struct AVLnode {
 	int key, height;
 	AVLnode* left, * right, * parent;
-	AVLnode() { clr(this, 0); }
+	AVLnode() { memset(this, 0, sizeof(this)); }
 	AVLnode(int key, AVLnode* left = NULL, AVLnode* right = NULL, AVLnode* parent = NULL) :
-		key(key), left(left), right(right), parent(parent) {}
+		key(key), left(left), right(right), parent(parent), height(0) {}
 	void updateHeight() {
-		height = 1 + max(right->height, left->height);
+		int h1 = 0, h2 = 0;
+		if (left != NULL)h1 = left->height;
+		if (right != NULL)h2 = right->height;
+		height = 1 + max(h1, h2);
 	}
 	int balanceFactor() {
 		return left->height - right->height;
