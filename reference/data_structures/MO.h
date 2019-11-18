@@ -21,9 +21,9 @@ void add(int index) {}
 void remove(int index) {}
 
 int solve(int l, int r) {
-	while (curL < l) remove(curL++);
 	while (curL > l) add(--curL);
 	while (curR < r) add(++curR);
+	while (curL < l) remove(curL++);
 	while (curR > r) remove(curR--);
 	return ans;
 }

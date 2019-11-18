@@ -45,3 +45,9 @@ ull catalanNumber(int n) {
 		rt += catalanNumber(i) * catalanNumber(n - i - 1);
 	return rt;
 }
+
+// count number of paths in matrix n*m 
+// go to right or down only
+ull countNumberOfPaths(int n, int m) {
+	return nCr(n + m - 2, n - 1);
+}

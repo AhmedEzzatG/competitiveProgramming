@@ -19,6 +19,13 @@ Int Mod(Int num, Int mod) { return (num & mod - 1); }
 template<class Int>
 bool isPowerOfTwo(Int num) { return (num & num - 1) == 0; }
 
+void genAllSubmask(int mask) {
+	for (int subMask = mask;; subMask = (subMask - 1) & mask) {
+		//code
+		if (subMask == 0)break;
+	}
+}
+
 // for run __builtin_popcount in visual
 #ifdef _MSC_VER
 #include <intrin.h>

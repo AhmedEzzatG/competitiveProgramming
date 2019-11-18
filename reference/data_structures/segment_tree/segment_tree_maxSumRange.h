@@ -15,15 +15,19 @@ struct segment_tree {
 	vector<node> tree, arr;
 
 	segment_tree(int n = 0) :n(n) {
-		arr = vector<node>(n);
-		tree = vector<node>(4 * n);
+		arr = vector<node>(n + 1);
+		tree = vector<node>(n << 2);
 	}
 
 	segment_tree(vector<node>& _arr) {
 		n = _arr.size() - 1;
-		tree = vector<node>(4 * n);
+		tree = vector<node>(n << 2);
 		arr = _arr;
 		build(1, 1, n);
+	}
+
+	void update(int pos, int val) {
+		update(1, 1, n, pos, val);
 	}
 
 	ll query(int from, int to) {
@@ -46,6 +50,18 @@ struct segment_tree {
 		int mid = start + end >> 1;
 		build(idx << 1, start, mid);
 		build(idx << 1 | 1, mid + 1, end);
+		tree[idx] = merge(tree[idx << 1], tree[idx << 1 | 1]);
+	}
+
+	void update(int idx, int start, int end, int pos, int val) {
+		if (start == end) {
+			tree[idx] = val; return;
+		}
+		int mid = start + end >> 1;
+		if (pos <= mid)
+			update(idx << 1, start, mid, pos, val);
+		else
+			update(idx << 1 | 1, mid + 1, end, pos, val);
 		tree[idx] = merge(tree[idx << 1], tree[idx << 1 | 1]);
 	}
 

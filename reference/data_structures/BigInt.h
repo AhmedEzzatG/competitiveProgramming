@@ -9,13 +9,32 @@ struct BigInt {
 	BigInt(long long val) { *this = val; }
 	int size() const { return v.size(); }
 	bool zero() const { return v.empty(); }
-	void operator =(const long long& a) {
+	BigInt operator =(const long long& a) {
 		v.clear();
 		long long val = a;
 		while (val) {
 			v.push_back(val % BASE);
 			val /= BASE;
 		}
+		return *this;
+	}
+	BigInt operator =(const BigInt& a) {
+		v = a.v;
+		return *this;
+	}
+	bool operator <(const BigInt& a)const {
+		if (a.size() != size())
+			return size() < a.size();
+		for (int i = 0; i < size(); i++) {
+			if (v[i] != a.v[i]) return v[i] < a.v[i];
+		}
+		return false;
+	}
+	bool operator >(const BigInt& a)const {
+		return a < *this;
+	}
+	bool operator == (const BigInt& a)const {
+		return (!(*this < a) && !(a < *this));
 	}
 	BigInt operator +(const BigInt& a) {
 		BigInt b = *this; b += a;
