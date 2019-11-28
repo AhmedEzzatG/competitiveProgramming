@@ -3,19 +3,24 @@
 struct AVLnode {
 	int key, height;
 	AVLnode* left, * right, * parent;
-	AVLnode() { memset(this, 0, sizeof(this)); }
-	AVLnode(int key, AVLnode* left = NULL, AVLnode* right = NULL, AVLnode* parent = NULL) :
-		key(key), left(left), right(right), parent(parent), height(0) {}
+	static AVLnode* sentinel;
+	AVLnode() {
+		parent = left = right = sentinel;
+		height = 0;
+	}
+	AVLnode(int key) : key(key) {
+		parent = left = right = sentinel;
+		height = 0;
+	}
 	void updateHeight() {
-		int h1 = 0, h2 = 0;
-		if (left != NULL)h1 = left->height;
-		if (right != NULL)h2 = right->height;
-		height = 1 + max(h1, h2);
+		height = 1 + max(left->height, right->height);
 	}
 	int balanceFactor() {
 		return left->height - right->height;
 	}
 };
+
+AVLnode* AVLnode::sentinel = new AVLnode();
 
 class AVL : public BST {
 	typedef AVLnode* nodeptr;
@@ -60,7 +65,8 @@ private:
 		return root;
 	}
 	nodeptr insert(nodeptr root, int key) {
-		if (root == NULL)return root = new AVLnode(key);
+		if (root == AVLnode::sentinel)
+			return root = new AVLnode(key);
 		if (key < root->key) {
 			root->left = insert(root->left, key);
 			root->left->parent = root;

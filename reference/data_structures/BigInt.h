@@ -25,7 +25,7 @@ struct BigInt {
 	bool operator <(const BigInt& a)const {
 		if (a.size() != size())
 			return size() < a.size();
-		for (int i = 0; i < size(); i++) {
+		for (int i = size() - 1; i >= 0; i--) {
 			if (v[i] != a.v[i]) return v[i] < a.v[i];
 		}
 		return false;
