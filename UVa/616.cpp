@@ -35,14 +35,11 @@ int main() {
 			ll nn = n, I = x;
 			bool b = 1;
 			while (I--) {
-				if (nn > 0) {
-					if (nn% x == 1) {
-						nn /= x;
-						nn *= (x - 1);
-					}
-					else { b = 0; break; }
+				if (nn% x == 1) {
+					nn /= x;
+					nn *= (x - 1);
 				}
-				else break;
+				else { b = 0; break; }
 			}
 			if (b&& nn% x == 0) p = x;
 		}
