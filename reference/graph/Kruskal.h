@@ -48,9 +48,9 @@ pair<int, vector<edge>> SMST_Kruskal(int n) {
 		mstCost = 0;
 		for (int j = 0; j < take.size(); j++) {
 			if (i == j)continue;
-			uf.union_sets(take[i].from, take[i].to);
-			mstCost += take[i].weight;
-			edges.push_back(take[i]);
+			uf.union_sets(take[j].from, take[j].to);
+			mstCost += take[j].weight;
+			edges.push_back(take[j]);
 		}
 		for (edge e : leave) {
 			if (uf.union_sets(e.from, e.to)) {
