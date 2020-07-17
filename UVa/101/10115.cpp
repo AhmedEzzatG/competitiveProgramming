@@ -20,25 +20,36 @@ void run() {
 #endif
 }
 
+string s;
+bool find(int i, const string& t) {
+	int j = 0;
+	while (i + j < sz(s) && j < sz(t) && s[i + j] == t[j]) j++;
+	return j == sz(t);
+}
+
+void replace(int i, int sz, const string& t) {
+	s = s.substr(0, i) + t + s.substr(i + sz);
+}
+
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
+	int n; 
+	while (cin >> n, n) {
+		cin.ignore();
+		vector<pair<string, string>> v(n);
+		for (int i = 0; i < n; i++) {
+			getline(cin, v[i].first);
+			getline(cin, v[i].second);
 		}
+		getline(cin, s);
+		for (int j = 0; j < n; j++) {
+			int i = 0;
+			while (i < sz(s)) {
+				if (find(i, v[j].first))
+					replace(i, sz(v[j].first), v[j].second);
+				else i++;
+			}
+		}
+		cout << s << endl;
 	}
 }

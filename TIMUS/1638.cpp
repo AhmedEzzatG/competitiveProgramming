@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include<unordered_map>
+#include<unordered_set>
 using namespace std;
 #define ll long long
 #define endl '\n'
@@ -22,23 +23,11 @@ void run() {
 
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
-		}
+	int n, m, s, e;
+	cin >> n >> m >> s >> e;
+	if (s < e) 	cout << n * (e - s - 1) + m * 2 * (e - s) << endl;
+	else {
+		swap(s, e);
+		cout << n * (e - s + 1) + m * 2 * (e - s) << endl;
 	}
 }

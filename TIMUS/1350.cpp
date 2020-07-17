@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include<unordered_map>
+#include<unordered_set>
 using namespace std;
 #define ll long long
 #define endl '\n'
@@ -22,23 +23,29 @@ void run() {
 
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
+	int n; cin >> n;
+	set<string> st;
+	while (n--) {
+		string s; cin >> s; st.insert(s);
+	}
+	cin >> n;
+	vector<vector<string>> v(n + 1);
+	for (int i = 0; i <= n; i++) {
+		int m; cin >> m;
+		while (m--) {
+			string s; cin >> s;
+			v[i].push_back(s);
 		}
+	}
+	int m; cin >> m;
+	for (auto it : v[0])st.erase(it);
+	for (int i = 1; i <= n; i++) {
+		int cnt = 0;
+		for (auto it : v[i]) {
+			if (st.find(it) != st.end())cnt++;
+		}
+		if (!cnt)cout << "YES\n";
+		else if (sz(st) - cnt >= m)cout << "MAYBE\n";
+		else cout << "NO\n";
 	}
 }

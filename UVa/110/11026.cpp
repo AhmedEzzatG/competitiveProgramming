@@ -15,30 +15,32 @@ void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
 	freopen("input.in", "r", stdin);
-	//freopen("output.out", "w", stdout);
+	freopen("output.out", "w", stdout);
 #else
 #endif
 }
 
+int n, m;
+vector<ll> v;
+ll mem[1001][1001];
+ll solve(int idx, int k) {
+	if (k == 0)return 1;
+	if (idx >= n - (k - 1))return 0;
+	ll& rt = mem[idx][k];
+	if (~rt)return rt;
+	return rt = (((v[idx] * solve(idx + 1, k - 1)) % m) + solve(idx + 1, k)) % m;
+}
+
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
-		}
+	while (cin >> n >> m, n || m) {
+		clr(mem, -1);
+		v = vector<ll>(n);
+		for (int i = 0; i < n; i++)
+			cin >> v[i];
+		ll mx = 0;
+		for (int k = n; k > 0; k--)
+			mx = max(mx, solve(0, k));
+		cout << mx << endl;
 	}
 }

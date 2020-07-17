@@ -22,23 +22,15 @@ void run() {
 
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
-		}
+	int n, m;
+	cin >> n >> m;
+	vector<int> cnt(n + 1);
+	for (int i = 0; i < m; i++) {
+		int x; cin >> x;
+		cnt[x]++;
+	}
+	cout << fixed << setprecision(2);
+	for (int i = 1; i <= n; i++) {
+		cout << cnt[i] * 100.0 / m  << "%" << endl;
 	}
 }

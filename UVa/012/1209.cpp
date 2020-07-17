@@ -20,25 +20,31 @@ void run() {
 #endif
 }
 
+int dif(const string &s) {
+	int mn = oo;
+	for (int i = 1; i < sz(s); i++)
+		mn = min(mn, abs(s[i] - s[i - 1]));
+	return mn;
+}
+
+bool cmp(const string& a, const string& b) {
+	if (dif(a) != dif(b))return dif(a) > dif(b);
+	return a < b;
+}
+
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
-		}
+	string s;
+	while (cin >> s) {
+		string ans = s;
+		string t = s;
+		int cnt = 10;
+		while (cnt-- && next_permutation(all(t)))
+			if (cmp(t, ans))ans = t;
+		t = s;
+		cnt = 10;
+		while (cnt-- && prev_permutation(all(t)))
+			if (cmp(t, ans))ans = t;
+		cout << ans << dif(ans) << endl;
 	}
 }

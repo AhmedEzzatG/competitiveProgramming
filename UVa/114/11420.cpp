@@ -15,30 +15,28 @@ void run() {
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 #ifndef ONLINE_JUDGE
 	freopen("input.in", "r", stdin);
-	//freopen("output.out", "w", stdout);
+	//freopen("input.out", "w", stdout);
 #else
 #endif
 }
 
+ll mem[70][70][2];
+ll solve(int n, int s, bool op) {
+	if (s < 0)return 0;
+	if (!n)return s == 0;
+	ll& rt = mem[n][s][op];
+	if (~rt)return rt;
+	rt = 0;
+	rt += solve(n - 1, s, true);
+	rt += solve(n - 1, s - !op, false);
+	return rt;
+}
+
 int main() {
 	run();
-	int t; cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		vector<int> v(n);
-		int mx = 0;
-		for (int i = 0; i < n; i++) { cin >> v[i]; mx += v[i]; }
-		vector<vector<int>> dp(n + 1, vector<int>(mx + 1));
-		dp[0][0] = 1;
-		for (int i = 0; i < n; i++) for (int d = 0; d <= mx; d++)
-			if (dp[i][d]) {
-				dp[i + 1][d + v[i]] = 1;
-				dp[i + 1][abs(d - v[i])] = 1;
-			}
-		for (int i = 0; i <= mx; i++) if (dp[n][i]) {
-			cout << i << endl;
-			break;
-		}
+	clr(mem, -1);
+	int n, s;
+	while (cin >> n >> s, n >= 0 && s >= 0) {
+		cout << solve(n, s, false) << endl;
 	}
 }
